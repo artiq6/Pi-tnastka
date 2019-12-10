@@ -1,0 +1,260 @@
+.block {
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+}
+
+/* div {
+    box-sizing: border-box;
+} */
+
+.main {
+    width: 100%;
+    height: auto;
+}
+
+.playground {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 600px;
+    height: 600px;
+    overflow: hidden;
+    box-sizing: border-box;
+    border:2px solid;
+    border-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+     box-shadow: 0 4px 15px 3px rgba(49, 196, 190, 0.75);
+    border-image-slice: 1;
+}
+
+#badMove{
+    color:white;
+    font-size:40px;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+}
+
+.timer {
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: 171px;
+    display: block;
+}
+
+.slider {
+    margin-left: auto;
+    margin-right: auto;
+    width: 450px;
+    height: 150px;
+    background: red;
+}
+
+.move {
+    z-index: -1;
+    background: #313b3f !important;
+    box-shadow: inset 0 0 15px rgba(49, 196, 190, 0.75);
+}
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+body{
+    overflow: auto;
+    background:#313b3f;
+
+}
+
+.sliderContainer {
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.slider img {
+    width: 200px;
+    height: 200px;
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 500px;
+}
+
+#prevBtn {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    left: 5%;
+    font-size: 30px;
+    color: white;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+#nextBtn {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    right: 5%;
+    font-size: 30px;
+    color: white;
+    opacity: 0.5;
+    cursor: pointer;
+}
+#nextBtn,#prevBtn{
+    transition: 0.3s all ease-in-out;
+}
+#nextBtn:hover,#prevBtn:hover{
+opacity: 1;
+}
+/*OVERLAY*/
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 2;
+    text-align: center;
+    transition: 1s all ease-in-out;
+  }
+    h1{
+      margin-top:30px;
+      color:white;
+      font-size:100px;
+  }
+    h3{
+    margin-top:20px;
+    color:white;
+    font-size:33px;
+  }
+  #overlay input{
+    margin-top:10px;
+      width:500px;
+      height: 30px;
+      border:2px solid #25aae1;
+      border-radius: 50px;
+     border-image-slice: 1;
+     text-align: center;
+  }
+  input:focus{
+    outline:none;
+    box-shadow: 0 4px 15px 3px rgba(49, 196, 190, 0.75);
+  }
+  #overlay button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 45px;
+    width:150px;
+
+  }
+  
+/*LEADERBOARD*/
+#leaderboard{
+position: fixed;
+display: none;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0,0,0,0.8);
+z-index: 2;
+text-align: center;
+transition: 1s all ease-in-out;
+}
+/*BUTTONS*/ 
+
+.buttons {
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    width: 500px;
+    display: block;
+}
+
+.btn {
+    width: 100px;
+    font-size: 16px;
+    font-weight: bolder;
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+    height: 30px;
+    text-align:center;
+    border: none;
+    background-size: 400% 10%;
+
+    border-radius: 50px;
+    transition: all .4s ease-in-out;
+}
+
+.btn:hover {
+    background-position: 100% 0;
+    transition: all .4s ease-in-out;
+}
+
+.btn:focus {
+    outline: none;
+}
+.buttonsLeader{
+    position: relative;
+    width:60%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.trophy {
+    width: 50px;
+    font-size: 20px; 
+    height: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.trophy i {
+    display: block;
+    padding-top:15px;
+}
+.gradient {
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+} 
+#leaderboardTable{
+    color:white;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    border-top: 3px solid #25aae1;
+    background-image: 
+    linear-gradient(#25aae1, transparent),
+    linear-gradient(#25aae1, transparent);
+    background-size: 3px 100%;
+    background-position: 0 0, 100% 0;
+    background-repeat: no-repeat; 
+    text-align: center;
+    margin-top:10px;
+}
+#leaderboardTable th{padding-bottom: 10px;}
+h1 b{
+    color:#25aae1;
+}
