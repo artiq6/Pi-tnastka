@@ -1,0 +1,1 @@
+![screenFromApp](./screenPietnastka.PNG)
