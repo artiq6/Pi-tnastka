@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+    crossorigin="anonymous">
+    <title>Piętnastka</title>
+</head>
+
+<body>
+    <script src="./js/overlay.js"></script>
+    <script src="./js/slider.js"></script>
+    <script src="./js/timer.js"></script>
+    <script src="./js/leaderboard.js"></script>
+
+    <script>
+        render();
+        var _size; //rozmiar pobrany z buttona
+        var _image; //obrazek tła
+        var _check; //sprwdzanie wygranej (włączało się podczas mieszania)
+
+        function render() {
+            renderOverlay(); //overlay po zakończeniu gry
+            renderLeaderboard(); //leaderboard działajacy jak overlay
+            //dodawnaie diva głównego (łatwe centrowanie obiektów)
+            var div = document.createElement('div');
+            div.classList.add("main");
+            document.body.appendChild(div);
+
+            //dodawnaie diva w którym umieszczona jest plansza 
+            var div = document.createElement('div');
+            div.classList.add('playground');
+            document.getElementsByClassName('main')[0].appendChild(div);
+            renderButtons();
+            renderTimer();
+            updateTime();
+            renderSlider();
+        }
+
+        function renderBlocks(size, image) {
+            _check=0;
+            _resultTime=0;
+            _resultTimeMilliseconds=0;
+            restartTimer();
+            document.getElementsByClassName('playground')[0].innerHTML = "";
+            //pozycja 0 dla tła
+            var backgroundX = 600;
+            var backgroundY = 600;
+            //pozycja 0 dla position
+            var blockX = 0;
+            var blockY = 0;
+            //zmienne określające rozmiar diva głównego (600px) oraz zmienna dl, szerokość 1 diva 
+            var dl = 600 / size;
+            var _id = 1; //ID numeracja od 1 
+
+            for (var i = 0; i < size; i++) {
+                backgroundX = 600;
+                blockY = 0;
+                for (var j = 0; j < size; j++) {
+                    var div = document.createElement('div');
+                    div.addEventListener("click", testBlock);
+                    //nadanie ID
+                    div.id = _id++;
+                    //wartość dla ostatniego (możliwe przesunięcie)
+                    if (i == size - 1 && j == size - 1) {
+                        div.classList.add("move")
+                        div.removeEventListener("click", testBlock);
+                    }
+                    //dodawanie stylów do diva
+                    div.classList.add("block");
+
+                    div.style.width = dl + "px";
+                    div.style.height = dl + "px";
+                    div.style.backgroundImage = "url("+_image+")" //obrazek !!!!
+                    console.log("url("+_image+")")
+                    //definiowanie zmiennej odpowiedzialnej za przesuwanie backgraunda
+
+                    var position = backgroundX.toString() + "px " + backgroundY.toString() + "px";
+                    console.log("pos:", position)
+
+                    div.style.top = blockX.toString() + "px"
+                    div.style.left = blockY.toString() + "px"
+
+                    div.style.backgroundPosition = position;
+                    backgroundX -= dl;
+                    blockY += dl;
+
+                    //div.style.border = "1px solid red";
+                    div.style.float = "left";
+                    document.getElementsByClassName("playground")[0].appendChild(div)
+                }
+                backgroundY -= dl;
+                blockX += dl;
+            }
+            var endShuffle = size *size * 10 * _size
+             var shufflingInterval //zmienna odpowiedzialana za interwał funckji shuffling
+             shufflingInterval = setInterval(shuffling, 10);
+             setTimeout(function () {
+                 clearInterval(shufflingInterval);
+                 startTimer();
+                 _check++;
+             }, endShuffle); 
+        }
+        //funkcja odpowiadająca za generowanie przycisków
+        function renderButtons() {
+            //div na buttony z rozmiarami
+            var div = document.createElement('div');
+            div.classList.add("buttons");
+            document.getElementsByClassName('main')[0].prepend(div);
+            
+            //ikona ranking
+            var div = document.createElement('div');
+            div.onclick=function(){
+                onLeaderboard();
+            }
+            div.classList.add('btn','trophy','gradient');
+            div.innerHTML='<i class="fas fa-trophy"></i>'
+            document.getElementsByClassName('main')[0].prepend(div);
+            
+            //tworzenie przycisków
+            for (var i = 0; i < 4; i++) {
+                var playgroundSize = i + 3;
+                var button = document.createElement('button');
+                button.classList.add('btn','gradient');
+                button.innerHTML = playgroundSize + "x" + playgroundSize;
+                var div = document.getElementsByClassName('buttons')[0];
+                div.appendChild(button)
+                button.onclick = function () {
+                    _size = parseInt(this.innerHTML.charAt(0))
+                    renderBlocks(_size,_image)
+                }
+            }
+        }
+        //funkcja odpowiadająca za generowanie zegara
+        function renderTimer() {
+            var div = document.createElement('div');
+            div.classList.add("timer")
+            document.getElementsByClassName('main')[0].prepend(div);
+        }
+        //GRA
+        //test gdzie można się ruszyć(z wykluczeniem błędów spowodowanych "wyjściem" poza planszę)
+        function testBlock() {
+            console.log()
+            var idBlock = parseInt(this.id); //id jednego diva
+            var _id = idBlock - 1; //rzeczywiste id w kolekcji
+            var idMove = parseInt(document.getElementsByClassName('move')[0].id)
+            console.log()
+            var tmpMove = document.getElementsByClassName('move')[0];
+            console.log(idBlock + _size)
+            var control = 1;
+
+            if ((idBlock + 1) == idMove && idBlock % _size != 0) {
+                swap(this, tmpMove)
+                control--;
+
+            }
+            //czy znajduje się po lewej 
+            if ((idBlock - 1) == idMove && idBlock % _size != 1) {
+                swap(this, tmpMove)
+                control--;
+
+            }
+            //czy znajduje się na dole
+            if ((idBlock + _size) == idMove) {
+                swap(this, tmpMove)
+                control--;
+
+            }
+            //czy znajduje się  na górze 
+            if ((idBlock - _size) == idMove) {
+                swap(this, tmpMove)
+                control--;
+
+            }
+            if (control == 1) {
+                console.log("BRAK RUCHU")
+                var overlay = document.createElement('div');
+                overlay.classList.add('badMove')
+                this.appendChild(overlay);
+
+                overlay = document.getElementsByClassName('badMove')[0]
+                overlay.style.width = this.style.width
+                overlay.style.height = this.style.height
+                overlay.style.background = "#25aae1";
+                overlay.style.opacity="0.5"
+                overlay.style.textAlign="center"
+                overlay.id="badMove"
+
+                var tmpObj = this;
+                setTimeout(function () {
+                    tmpObj.innerHTML = "";
+                }, 100);
+
+            }
+        }
+        function swap(objBlock, objMove) {
+            var tmpLeft = objMove.style.left.toString();
+            var tmpTop = objMove.style.top.toString();
+            var tmpId = objMove.id;
+            objMove.style.left = objBlock.style.left.toString();
+            objMove.style.top = objBlock.style.top.toString();
+
+            objBlock.style.left = tmpLeft;
+            objBlock.style.top = tmpTop;
+
+            objMove.id = objBlock.id;
+            objBlock.id = tmpId;
+            _check > 0 ? winCheck() : null
+        }
+
+        function shuffling() {
+            var side = Math.floor(Math.random() * 4) + 1; //1-lewo 2-prawo 3-góra 4-dół
+            var Move = document.getElementsByClassName('move')[0]
+            var idMove = parseInt(Move.id);
+            var idCollection = idMove - 1;
+            switch (side) {
+                case 1:
+                    if (document.getElementById(idMove - 1) != null && (idMove - 1) % _size != 0) {
+                        var tmpBlock = document.getElementById(idMove - 1)
+                        console.log("LEWO")
+                        swap(tmpBlock, Move)
+                    }
+                    else
+                        shuffling();
+                    break;
+                case 2:
+                    if (document.getElementById(idMove + 1) != null && (idMove + 1) % _size != 1) {
+                        var tmpBlock = document.getElementById(idMove + 1)
+                        console.log("PRAWO")
+                        swap(tmpBlock, Move)
+                    }
+                    else
+                        shuffling();
+                    break;
+                case 3:
+                    if (document.getElementById(idMove - _size) != null) {
+                        var tmpBlock = document.getElementById(idMove - _size)
+                        console.log("GÓRA")
+                        swap(tmpBlock, Move)
+                    }
+                    else
+                        shuffling();
+                    break;
+                case 4:
+                    if (document.getElementById(idMove + _size) != null) {
+                        var tmpBlock = document.getElementById(idMove + _size)
+                        console.log("DÓŁ")
+                        swap(tmpBlock, Move)
+                    }
+                    else
+                        shuffling();
+                    break;
+                default:
+                    shuffling();
+            }
+        }
+        function endgame() {
+            pauseTimer();
+            onOverlay();
+        }
+        function winCheck() {
+            var blockCollection = document.getElementsByClassName('block');
+            var win = 0;
+            for (var i = 0; i < blockCollection.length; i++) {
+                if (blockCollection[i].id == i + 1) {
+                    win++
+                }
+            }
+            win == blockCollection.length ? endgame() : console.log("NO")
+        }
+
+    </script>
+</body>
+
+</html>
