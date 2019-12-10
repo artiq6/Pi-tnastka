@@ -1,6 +1,6 @@
-# Zbigniew Herbert web page 
+# Piętnastka
 
-Web page about Z.Herbert created for a school competition.
+Simple game created in JS
 
 ## Getting Started
 
@@ -19,7 +19,6 @@ uznip, open file index.html
 
 ## Built With
 
-* BOOTSTRAP 
 * JS
 * HTML
 * CSS
@@ -29,4 +28,4 @@ uznip, open file index.html
 * **Artur Haluch** 
 
 ## Screens
-![screenFromApp](./screenHerbert)
+![screenFromApp](./screenPietnastka.PNG)
