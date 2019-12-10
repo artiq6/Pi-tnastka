@@ -1,6 +1,6 @@
-# Pietnastka
+# Zbigniew Herbert web page 
 
-Simple game called "Pietnastka" (fr.taquin)
+Web page about Z.Herbert created for a school competition.
 
 ## Getting Started
 
@@ -19,6 +19,7 @@ uznip, open file index.html
 
 ## Built With
 
+* BOOTSTRAP 
 * JS
 * HTML
 * CSS
@@ -28,4 +29,4 @@ uznip, open file index.html
 * **Artur Haluch** 
 
 ## Screens
-![screenFromApp](./screenPietnastka.PNG)
+![screenFromApp](./screenHerbert)
